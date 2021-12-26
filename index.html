@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Rolling Circle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      canvas {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+
+    <script>
+      const canvas = document.querySelector('canvas')
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+      const context = canvas.getContext('2d')
+
+      const radius = 30
+      const padding = 8
+      let ox = padding + radius
+      let oy = padding + radius
+
+      function render(elapsedTime) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+
+        const offsetX = elapsedTime / 4
+        const x = ox + offsetX
+        const angle = (offsetX / (2 * radius * Math.PI)) * (2 * Math.PI)
+
+        context.beginPath()
+        context.arc(x, oy, radius, 0, 2 * Math.PI)
+        context.stroke()
+        context.beginPath()
+        context.moveTo(x, oy)
+        context.lineTo(x + radius * Math.cos(angle), oy + radius * Math.sin(angle))
+        context.stroke()
+
+        requestNextAnimationFrame()
+      }
+
+      function requestNextAnimationFrame() {
+        requestAnimationFrame(render)
+      }
+
+      requestNextAnimationFrame()
+    </script>
+  </body>
+</html>
